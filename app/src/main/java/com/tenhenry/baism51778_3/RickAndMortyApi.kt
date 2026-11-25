@@ -15,8 +15,14 @@ interface RickAndMortyApi {
 }
 
 object ApiClient {
+    private val httpClient = okhttp3.OkHttpClient.Builder()
+        .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+        .callTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+        .build()
+
     val api: RickAndMortyApi = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/api/")
+        .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(RickAndMortyApi::class.java)
